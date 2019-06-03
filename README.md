@@ -23,8 +23,9 @@
 
 * 필요한 라이브러리를 가져옵니다.
 
+## 필요한 패키지와 라이브러리를 가져옴
+
 ~~~python
-# 필요한 패키지와 라이브러리를 가져옴
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
@@ -50,7 +51,8 @@ from IPython.display import Image
 # 그래프에서 마이너스 폰트 깨지는 문제에 대한 대처
 mpl.rcParams['axes.unicode_minus'] = False
 ~~~
-*데이터 확인
+
+## 데이터 확인
 ~~~python
 park = pd.read_csv('C:\\Users\\최재혁\\Desktop\\컴시입\\data.csv', encoding='euc-kr', engine='python')
 # OSError: Initializing from file failed라고 에러 발생해서 engine='python' 옵션을 추가해줌.
@@ -59,15 +61,15 @@ park.shape
 park.head(5)
 ~~~
 
-*변수 설명 및 타입 확인
+## 변수 설명 및 타입 확인
 ~~~python
 #변수들의 타입 확인
 park.dtypes
 ~~~
 
-*변수 제거
+## 변수 제거
 
-*주제와 관련 없는 변수들을 제거합니다.
+주제와 관련 없는 변수들을 제거합니다.
 ~~~python
 park.columns
 park.drop(columns=['공원보유시설(운동시설)', '공원보유시설(유희시설)', '공원보유시설(편익시설)', '공원보유시설(교양시설)',
@@ -75,15 +77,15 @@ park.drop(columns=['공원보유시설(운동시설)', '공원보유시설(유�
 park.columns
 ~~~
 
-*결측치 파악
+## 결측치 파악
 
-*missingno 패키지를 이용하여 결측치의 존재를 시각적으로 확인합니다.
+missingno 패키지를 이용하여 결측치의 존재를 시각적으로 확인합니다.
 
 ~~~python
 park.isnull().sum()
 msno.matrix(park)
 ~~~
-*'소재지도로명주소'와 '소재지지번주소' 변수 중에서 결측치가 존재하더라도 
+'소재지도로명주소'와 '소재지지번주소' 변수 중에서 결측치가 존재하더라도 
 
 둘 중의 하나는 관측값이 있으므로 서로를 채워주면 결측치를 처리할 수 있습니다.
 
@@ -210,35 +212,41 @@ jeju_park
 ~~~
 1) 공원들이 주로 제주도의 중심부보다는 
 
-  해안선을 따라 많이 분포되어있음을 알 수 있습니다.
+    해안선을 따라 많이 분포되어있음을 알 수 있습니다.
 
 2) 근린공원의 경우에는 전체적으로 넓게 분포되어 있는 형태이고
   
-  어린이공원의 경우에는 북쪽, 남쪽에 밀집되어 있는 형태임을 알 수 있습니다.
-  그 외의 공원의 경우에는 공원의 개수 자체가 매우 적기 때문에 분포를 파악하기가 부적절 합니다.
+   어린이공원의 경우에는 북쪽, 남쪽에 밀집되어 있는 형태임을 알 수 있습니다.
+  
+   그 외의 공원의 경우에는 공원의 개수 자체가 매우 적기 때문에 분포를 파악하기가 부적절 합니다.
 
 3) 공원면적비율이 '근린공원'이 주로 큰 것을 위의 그림을 통해
 
-  확인할 수 있었습니다.
+    확인할 수 있었습니다.
 
-  이를 확인하기 위해 boxplot을 이용합니다.
+    이를 확인하기 위해 boxplot을 이용합니다.
 
 ## 공원구분별 면적비율 확인
+
 ~~~python
 (ggplot(jeju)
     + aes(x="공원구분",y="공원면적비율")
     + geom_boxplot() 
     + theme(text=element_text(family='Malgun Gothic')))
 ~~~
+
 1) 근린공원의 경우는 전체적으로 면적비율이 큰 편임을 알 수 있다.
 
 2) 어린이공원의 경우는 면적비율이 다른 공원들에 비해 매우 작음을 알 수 있다.
 
 3) 그 외의 공원들의 경우에는 관측치 개수가 매우 적기 때문에 
   
-  구분별 크기의 성질을 파악하는 것은 부적절하다.
+    구분별 크기의 성질을 파악하는 것은 부적절하다.
   
 ## 제주시, 서귀포시 확대하여 중심부 일부만을 확인
+
+지금까지의 분석을 확인하기 위해 밀집지역을 확대하여 살펴봅니다.
+
 ~~~python
 jeju_jeju = jeju.loc[jeju['구군'] == '제주시']
 (ggplot(jeju_jeju)
@@ -254,8 +262,6 @@ jeju_jeju = jeju.loc[jeju['구군'] == '서귀포시']
  + geom_jitter(color='lightgray', alpha=0.25)
  + theme(text=element_text(family='Malgun Gothic')) +xlim(126.4,126.8)+ylim(33.2,33.3))
 ~~~
-지금까지의 분석을 확인하기 위해 밀집지역을 확대하여 살펴봅니다.
-
 
 제주시의 경우에는 공항근처에 공원이 많이 밀집되어 있고,
 
