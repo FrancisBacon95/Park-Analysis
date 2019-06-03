@@ -358,7 +358,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(
         X,Y,test_size=0.3,random_state=0)
 ~~~
 
-## 
+## 모델
 ~~~python
 seed=201514150
 model=DecisionTreeClassifier(criterion='entropy',max_depth=3,random_state=seed)
@@ -389,4 +389,18 @@ Image(graph.create_png())
     Oversampling, Undersampling, SMOTE(Synthetic Minority Over-sampling Technique) 
     
     등의 기법을 추가적으로 사용해야 한다. 
+
+# 최종결론
+
+* 공원을 나누는 기준은 면적이다.
+
+* 제주도에는 공원이 해안선을 따라 분포되어 있다.
+
+* 제주도에는 어린이공원과 근린공원이 대부분이다.
+
+* 근린공원의 경우는 규모가 큰 편이나 어린이공원의 경우는 규모가 작은 편이다.
+
+* 어린이공원은 "제주시 : 제주공항", "서귀포시 : 중문지역"에 공원이 밀집되어 있다.
+
+* 근린공원은 제주도 전반에 걸쳐 넓게 분포되어 있다.
 
