@@ -19,7 +19,7 @@
 
 ## 소스
 * [링크로 소스 내용 보기]
-(https://github.com/cybermin/python2019/blob/master/tes.py) 
+(https://github.com/michinnom/-/blob/master/201514150최재혁(Py코드)수정.py) 
 
 
 
