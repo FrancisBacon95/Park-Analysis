@@ -60,6 +60,7 @@ park = pd.read_csv('C:\\Users\\최재혁\\Desktop\\컴시입\\data.csv', encodin
 park.shape
 park.head(5)
 ~~~
+![01](https://user-images.githubusercontent.com/51112316/58788418-d7dd6200-8626-11e9-9d51-e03512cb7aaf.JPG)
 
 ## 변수 설명 및 타입 확인
 ~~~python
