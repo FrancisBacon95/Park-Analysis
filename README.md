@@ -268,3 +268,124 @@ jeju_jeju = jeju.loc[jeju['구군'] == '서귀포시']
 서귀포시의 경우에는 중문 근처에 공원이 많이 밀집되어 있음을 확인할 수 있습니다.
    
 이를 통해 주로 사람들이 많이 몰리는 곳에 공원 또한 많이 분포되어 있음을 알 수 있습니다.
+
+
+# 결론
+
+## 1. 제주도에는 공원이 해안선을 따라 분포되어 있다.
+
+## 2. 제주도에는 어린이공원과 근린공원이 대부분이다.
+
+## 3. 근린공원의 경우는 규모가 큰 편이나 어린이공원의 경우는 규모가 작은 편이다.
+
+## 4. 어린이공원은 "제주시 : 제주공항", "서귀포시 : 중문지역"에 공원이 밀집되어 있다.
+
+## 5. 근린공원은 제주도 전반에 걸쳐 넓게 분포되어 있다.
+
+# 검증
+
+## DECISISON TREE(의사결정나무)모델을 통한 검증
+
+의사결정나무 모델을 생성하여 위의 제가 내린 결론들을 대략적으로 검증해보았습니다.
+
+의사결정나무는 기계 학습(Machine Learning)에서 사용하는 모델링 방법 중 하나입니다.
+
+예측, 분류 등 여러 분야로 사용되고 응용될 수 있는데 이번 프로젝트 목적 상
+
+간단히 분류하여 그 분류모델을 통해 제 분석이 타당한지를 검증해보는 용도로 사용했습니다.
+
+### 의사결정나무
+
+이번 프로젝트에 사용된 의사결정나무 기법에 대해 간단히 설명하자면
+
+각 설명변수에 변수중요도를 매겨 변수중유도에 따라 데이터를 분류합니다.
+
+데이터에 대하여 A1 조건을 주고 "참이면, B1조건으로.", "거짓이면, B2조건으로." 
+
+이처럼 이분법적으로 나누고 그 속에서 또 다시 
+
+"B1 조건이 참이면, C1조건으로.", "B1조건이 거짓이면, C2조건으로.", 
+
+"B2조건이 참이면, C3조건으로.", "B2조건이 거짓이면, C4조건으로."
+
+......
+
+이렇게 계속적으로 뻗어 내려가 데이터를 분류해내는 모델입니다.
+
+## 모델링을 위한 데이터 전처리
+
+반응변수(Y) : 공원구분
+설명변수(X1, X2, X3) : 공원면적비율, 위도, 경도 
+
+~~~python
+jeju2 = jeju.loc[(jeju['공원구분'] == "근린공원")|
+        (jeju['공원구분'] == "어린이공원")|    
+        (jeju['공원구분'] == "체육공원")|
+        (jeju['공원구분'] == "문화공원")]
+
+#############
+jeju2['Y']=jeju2['공원구분']
+X=jeju2[['공원면적비율','위도','경도']]
+Y=jeju2[['Y']]
+
+Y.loc[ Y['Y'] == "근린공원", 'Y'] = 0
+Y.loc[ Y['Y'] == "어린이공원", 'Y'] = 1
+Y.loc[ Y['Y'] == "체육공원", 'Y'] = 2
+Y.loc[ Y['Y'] == "문화공원", 'Y'] = 3
+
+feature_names=["ratio of area","lat.","long."]
+~~~
+### TRAIN SET, TEST SET으로 분할 (7:3)
+원래는 TRAIN SET, VALIDATION SET, TEST SET으로 나누어 
+
+VALIDATION SET으로 모델 성능을 평가하면서 올린 후에 
+
+이후에 제공되는 데이터인 TEST SET으로 학습된 모델을 평가 받는 것입니다.
+
+(비유 하자면 TRAIN : 교과서, VALIDATION : 퀴즈, TEST : 시험)  
+
+그런데 이번 프로젝트 목적상 좋은 모델을 만드는 게 아니라
+
+EDA를 통해 제가 얻은 분석을 검증을 하기 위함이므로 
+
+간략하게 전체데이터를 7:3 = TRAIN : TEST 으로 분할하여
+
+TRAIN SET으로 모델을 만들어 그 모델을 TEST SET의 데이터를 검증하는 방식으로 수행했습니다.
+
+~~~python
+X_train, X_test, Y_train, Y_test = train_test_split(
+        X,Y,test_size=0.3,random_state=0)
+~~~
+
+## 
+~~~python
+seed=201514150
+model=DecisionTreeClassifier(criterion='entropy',max_depth=3,random_state=seed)
+
+model.fit(X_train,Y_train)
+print("학습용 데이터 정확도 : {:.3f}".format(model.score(X_train,Y_train)))
+print("검증용 데이터 정확도 : {:.3f}".format(model.score(X_test, Y_test)))
+~~~
+
+## 모델 시각화
+~~~python
+#경도 : long. 위도:lat.
+dot_data=export_graphviz(model,out_file=None, feature_names=feature_names,
+                         rounded=True,class_names=["Neighbor","Kids","Athletic","Culture"], special_characters=True)
+graph=pydotplus.graph_from_dot_data(dot_data)
+Image(graph.create_png())
+~~~
+1) 변수중요도 : 공원면적비율 >> 위도(lat.) >>> 경도(long.)
+    임을 시각화를 통해 대략적으로 식별할 수 있다.
+
+2) 사실상 공원을 나누는 기준은 면적이라고 볼 수 있다.
+    
+3) 주로 근린공원이 공원면적비율이 큼을 알 수 있다. 
+    (체육공원도 매우 크지만 관측치 개수가 매우 적으므로 그 이상의 해석이 불가능하다.)
+    
+4) 그 이상의 해석은 데이터 불균형으로 인해 불가능하므로 
+
+    Oversampling, Undersampling, SMOTE(Synthetic Minority Over-sampling Technique) 
+    
+    등의 기법을 추가적으로 사용해야 한다. 
+
