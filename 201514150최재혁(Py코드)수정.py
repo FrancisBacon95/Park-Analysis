@@ -93,6 +93,15 @@ park['구군'] = park['소재지도로명주소'].str.split(' ', expand=True)[1]
  + theme(text=element_text(family='Malgun Gothic'))
 )
 
+# 위경도가 잘못입력된 데이터를 본다.
+# 주소가 잘못되지는 않았다.
+# 주소를 통해 위경도를 다시 받아온다.
+outlier=park.loc[(park['위도'] < 30 ) | (park['경도'] >= 130)]
+outlier["소재지도로명주소"]
+park["위도"][13304]=35.2123875
+#사용할 데이터는 부산과 제주도이기 때문에 주소지가 부산인 데이터만
+#수정했다.
+
 #결측치 존재 확인
 #데이터 전처리를 통해
 #시도 결측치를 처리하거나
@@ -102,14 +111,7 @@ park_loc_notnull = park.loc[(park['위도'] > 32 ) & (park['경도'] < 130) & pa
 park.shape
 park_loc_notnull.shape
 
-# 위경도가 잘못입력된 데이터를 본다.
-# 주소가 잘못되지는 않았다.
-# 주소를 통해 위경도를 다시 받아온다.
-outlier=park.loc[(park['위도'] < 30 ) | (park['경도'] >= 130)]
-outlier["소재지도로명주소"]
-park_loc_notnull["위도"][13304]=35.2123875
-#사용할 데이터는 부산과 제주도이기 때문에 주소지가 부산인 데이터만
-#수정했다.
+
 
 
 #시도별 공원 데이터
@@ -167,22 +169,15 @@ jeju_jeju = jeju.loc[jeju['구군'] == '서귀포시']
  + theme(text=element_text(family='Malgun Gothic')) +xlim(126.4,126.8)+ylim(33.2,33.3))
 
 
-####랜덤포레스트####
+###DECISION TREE####
 
-'''
-Y.loc[Y["Y"] == "근린공원", "Y"] = "N" 
-Y.loc[Y["Y"] == "어린이공원", "Y"] = "K"
-Y.loc[Y["Y"] == "체육공원", "Y"] = "A"
-Y.loc[Y["Y"] == "문화공원", "Y"] = "C"
-'''
-#####################
 
 jeju2 = jeju.loc[(jeju['공원구분'] == "근린공원")|
         (jeju['공원구분'] == "어린이공원")|    
         (jeju['공원구분'] == "체육공원")|
         (jeju['공원구분'] == "문화공원")]
 
-#############
+
 jeju2['Y']=jeju2['공원구분']
 X=jeju2[['공원면적비율','위도','경도']]
 Y=jeju2[['Y']]
@@ -203,8 +198,6 @@ feature_names=["ratio of area","lat.","long."]
 X_train, X_test, Y_train, Y_test = train_test_split(
         X,Y,test_size=0.3,random_state=0)
 
-
-
 #트리모델 생성
 #criterion='entropy' 분류 알고리즘 종류
 seed=201514150
@@ -213,10 +206,6 @@ model=DecisionTreeClassifier(criterion='entropy',max_depth=4,random_state=seed)
 model.fit(X_train,Y_train)
 print("학습용 데이터 정확도 : {:.3f}".format(model.score(X_train,Y_train)))
 print("검증용 데이터 정확도 : {:.3f}".format(model.score(X_test, Y_test)))
-
-
-
-
 
 #경도 : long. 위도:lat.
 dot_data=export_graphviz(model,out_file=None, feature_names=feature_names,
