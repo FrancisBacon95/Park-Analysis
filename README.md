@@ -152,8 +152,8 @@ park_loc_notnull.shape
 
 '공원면적비율' 이라는 새로운 변수를 생성한다.
 ~~~python
-park['공원면적비율']=park['공원면적'].apply(lambda x : np.sqrt(x)*0.01)
-park['공원면적비율']
+park_loc_notnull['공원면적비율']=park_loc_notnull['공원면적'].apply(lambda x : np.sqrt(x)*0.01)
+park_loc_notnull['공원면적비율']
 ~~~
 
 이것으로 분석에 필요한 데이터 전처리는 모두 완료했습니다.
