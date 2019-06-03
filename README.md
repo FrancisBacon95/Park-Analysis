@@ -32,8 +32,7 @@
 [데이터보기](https://www.data.go.kr/dataset/15012890/standard.do)
 
 ## 소스
-* [링크로 소스 내용 보기]
-(https://github.com/michinnom/-/blob/master/201514150최재혁(Py코드)수정.py) 
+* [링크로 소스 내용 보기](https://github.com/michinnom/-/blob/master/201514150최재혁(Py코드)수정.py) 
 
 
 
