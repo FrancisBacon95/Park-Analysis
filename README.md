@@ -67,6 +67,7 @@ park.head(5)
 #변수들의 타입 확인
 park.dtypes
 ~~~
+![02](https://user-images.githubusercontent.com/51112316/58788419-d7dd6200-8626-11e9-8d1f-6ae32911899d.JPG)
 
 ## 변수 제거
 
@@ -77,6 +78,7 @@ park.drop(columns=['공원보유시설(운동시설)', '공원보유시설(유�
        '공원보유시설(기타시설)', '지정고시일', '관리기관명', '데이터기준일자','제공기관코드','제공기관명','Unnamed: 19'], inplace=True)
 park.columns
 ~~~
+![03](https://user-images.githubusercontent.com/51112316/58788420-d875f880-8626-11e9-9747-5b13bf1e3df2.JPG)
 
 ## 결측치 파악
 
@@ -86,6 +88,8 @@ missingno 패키지를 이용하여 결측치의 존재를 시각적으로 확�
 park.isnull().sum()
 msno.matrix(park)
 ~~~
+![04_1](https://user-images.githubusercontent.com/51112316/58788421-d875f880-8626-11e9-88fa-cca574722d1e.JPG)
+![04_2](https://user-images.githubusercontent.com/51112316/58788422-d90e8f00-8626-11e9-95a0-ac1ad8380be5.png)
 '소재지도로명주소'와 '소재지지번주소' 변수 중에서 결측치가 존재하더라도 
 
 둘 중의 하나는 관측값이 있으므로 서로를 채워주면 결측치를 처리할 수 있습니다.
@@ -95,6 +99,8 @@ park['소재지도로명주소'].fillna(park['소재지지번주소'], inplace= 
 park['소재지도로명주소'].isnull().sum()
 msno.matrix(park)
 ~~~
+![05_1](https://user-images.githubusercontent.com/51112316/58788424-d90e8f00-8626-11e9-95af-8919b9beb255.JPG)
+![05_2](https://user-images.githubusercontent.com/51112316/58788425-d90e8f00-8626-11e9-90f2-e34d4ddaf68e.png)
 
 특별시/도/광역시로 구분하고 시/구/군으로 구분하기 위해
 
@@ -103,6 +109,7 @@ msno.matrix(park)
 park['시도'] = park['소재지도로명주소'].str.split(' ',expand=True)[0]
 park['구군'] = park['소재지도로명주소'].str.split(' ', expand=True)[1]
 ~~~
+![06](https://user-images.githubusercontent.com/51112316/58788426-d9a72580-8626-11e9-8e55-d87840f4a3b8.JPG)
 
 위/경도 데이터 확인
 
@@ -117,6 +124,7 @@ ggplot을 이용해 scatter plot을 그려 확인합니다.
  + theme(text=element_text(family='Malgun Gothic'))
 )
 ~~~
+![07](https://user-images.githubusercontent.com/51112316/58788428-d9a72580-8626-11e9-88f9-fa4a4c255208.png)
 
 국내 공원에 대한 데이터임에도 불구하고 국외의 위치에 찍혀있는
 
@@ -131,6 +139,8 @@ outlier=park.loc[(park['위도'] < 30 ) | (park['경도'] >= 130)]
 outlier["소재지도로명주소"]
 park["위도"][13304]=35.2123875
 ~~~
+![08](https://user-images.githubusercontent.com/51112316/58788429-d9a72580-8626-11e9-9319-74349e95fce1.JPG)
+
 주소지의 경우는 국내로 제대로 되어 있으나 
 
 위/경도가 잘못 표시된 것으로 판단했습니다.
@@ -146,6 +156,7 @@ park_loc_notnull = park.loc[(park['위도'] > 32 ) & (park['경도'] < 130) & pa
 park.shape
 park_loc_notnull.shape
 ~~~
+![09](https://user-images.githubusercontent.com/51112316/58788431-da3fbc00-8626-11e9-9061-c7f2cad9367e.JPG)
 
 이후에 분석을 위해 시각화를 했을 때,
 
@@ -170,6 +181,9 @@ park_loc_notnull['공원면적비율']
  + theme(text=element_text(family='Malgun Gothic'))
 )
 ~~~
+![10](https://user-images.githubusercontent.com/51112316/58788432-da3fbc00-8626-11e9-9220-28089982d8b2.png)
+
+
 
 # ANALYSIS
 
@@ -195,6 +209,9 @@ jeju_park
  + theme(text=element_text(family='Malgun Gothic'))
 )
 ~~~
+![11_01](https://user-images.githubusercontent.com/51112316/58788433-da3fbc00-8626-11e9-997b-07039e92824a.JPG)
+![11-02](https://user-images.githubusercontent.com/51112316/58788434-da3fbc00-8626-11e9-9683-968942923086.png)
+
 
 ### 공원구분별 분포 확인
 
@@ -211,6 +228,9 @@ jeju_park
  + theme(text=element_text(family='Malgun Gothic'))
 )
 ~~~
+![12](https://user-images.githubusercontent.com/51112316/58788435-dad85280-8626-11e9-90e4-7a06fb31fef4.png)
+
+
 1) 공원들이 주로 제주도의 중심부보다는 
 
     해안선을 따라 많이 분포되어있음을 알 수 있습니다.
@@ -226,6 +246,7 @@ jeju_park
     확인할 수 있었습니다.
 
     이를 확인하기 위해 boxplot을 이용합니다.
+    
 
 ## 공원구분별 면적비율 확인
 
@@ -235,6 +256,7 @@ jeju_park
     + geom_boxplot() 
     + theme(text=element_text(family='Malgun Gothic')))
 ~~~
+![13](https://user-images.githubusercontent.com/51112316/58788436-dad85280-8626-11e9-9306-699e640fcdd8.png)
 
 1) 근린공원의 경우는 전체적으로 면적비율이 큰 편임을 알 수 있다.
 
@@ -243,6 +265,7 @@ jeju_park
 3) 그 외의 공원들의 경우에는 관측치 개수가 매우 적기 때문에 
   
     구분별 크기의 성질을 파악하는 것은 부적절하다.
+  
   
 ## 제주시, 서귀포시 확대하여 중심부 일부만을 확인
 
@@ -263,6 +286,8 @@ jeju_jeju = jeju.loc[jeju['구군'] == '서귀포시']
  + geom_jitter(color='lightgray', alpha=0.25)
  + theme(text=element_text(family='Malgun Gothic')) +xlim(126.4,126.8)+ylim(33.2,33.3))
 ~~~
+![14_01](https://user-images.githubusercontent.com/51112316/58788437-dad85280-8626-11e9-982a-2f7ae23e98d6.png)
+![14-02](https://user-images.githubusercontent.com/51112316/58788438-db70e900-8626-11e9-8c8c-b735b28491bd.png)
 
 제주시의 경우에는 공항근처에 공원이 많이 밀집되어 있고,
 
@@ -368,6 +393,7 @@ model.fit(X_train,Y_train)
 print("학습용 데이터 정확도 : {:.3f}".format(model.score(X_train,Y_train)))
 print("검증용 데이터 정확도 : {:.3f}".format(model.score(X_test, Y_test)))
 ~~~
+![15](https://user-images.githubusercontent.com/51112316/58788440-dc097f80-8626-11e9-80f9-e695ad275cbb.JPG)
 
 ## 모델 시각화
 ~~~python
@@ -377,6 +403,8 @@ dot_data=export_graphviz(model,out_file=None, feature_names=feature_names,
 graph=pydotplus.graph_from_dot_data(dot_data)
 Image(graph.create_png())
 ~~~
+![16](https://user-images.githubusercontent.com/51112316/58788441-dc097f80-8626-11e9-9f1b-92eac810ff4b.png)
+
 1) 변수중요도 : 공원면적비율 >> 위도(lat.) >>> 경도(long.)
     임을 시각화를 통해 대략적으로 식별할 수 있다.
 
