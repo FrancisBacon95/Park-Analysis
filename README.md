@@ -110,8 +110,8 @@ park['구군'] = park['소재지도로명주소'].str.split(' ', expand=True)[1]
 ggplot을 이용해 scatter plot을 그려 확인합니다.
 
 ~~~python
-(ggplot(park_loc_notnull)
- + aes(x='경도', y='위도', color='시도')
+(ggplot(park)
+ + aes(x='경도', y='위도')
  + geom_point()
  + theme(text=element_text(family='Malgun Gothic'))
 )
