@@ -28,7 +28,7 @@
 4. Decision Tree Model을 이용한 분석 결과 검증
 5. 결론 
 
-## 사용한 공공데이터 
+## 사용한 공공데이터 (전국도시공원표준데이터 )
 [데이터보기](https://www.data.go.kr/dataset/15012890/standard.do)
 
 ## 소스
