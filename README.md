@@ -36,6 +36,26 @@
 
 
 
+
+## 데이터 확인
+~~~python
+park = pd.read_csv('C:\\Users\\최재혁\\Desktop\\컴시입\\data.csv', encoding='euc-kr', engine='python')
+# OSError: Initializing from file failed라고 에러 발생해서 engine='python' 옵션을 추가해줌.
+
+park.shape
+park.head(5)
+~~~
+![01](https://user-images.githubusercontent.com/51112316/58788418-d7dd6200-8626-11e9-9d51-e03512cb7aaf.JPG)
+
+## 변수 설명 및 타입 확인
+### 변수설명은 직관적으로 해석가능하기에 생략한다.
+~~~python
+#변수들의 타입 확인
+park.dtypes
+~~~
+![02](https://user-images.githubusercontent.com/51112316/58788419-d7dd6200-8626-11e9-8d1f-6ae32911899d.JPG)
+
+
 ## 필요한 패키지와 라이브러리를 가져옴
 
 ~~~python
@@ -64,24 +84,6 @@ from IPython.display import Image
 # 그래프에서 마이너스 폰트 깨지는 문제에 대한 대처
 mpl.rcParams['axes.unicode_minus'] = False
 ~~~
-
-## 데이터 확인
-~~~python
-park = pd.read_csv('C:\\Users\\최재혁\\Desktop\\컴시입\\data.csv', encoding='euc-kr', engine='python')
-# OSError: Initializing from file failed라고 에러 발생해서 engine='python' 옵션을 추가해줌.
-
-park.shape
-park.head(5)
-~~~
-![01](https://user-images.githubusercontent.com/51112316/58788418-d7dd6200-8626-11e9-9d51-e03512cb7aaf.JPG)
-
-## 변수 설명 및 타입 확인
-### 변수설명은 직관적으로 해석가능하기에 생략한다.
-~~~python
-#변수들의 타입 확인
-park.dtypes
-~~~
-![02](https://user-images.githubusercontent.com/51112316/58788419-d7dd6200-8626-11e9-8d1f-6ae32911899d.JPG)
 
 ## 변수 제거
 
