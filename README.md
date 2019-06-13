@@ -101,7 +101,7 @@ from IPython.display import Image
 mpl.rcParams['axes.unicode_minus'] = False
 ~~~
 
-# 2. 데이터 
+# 2. 데이터 전처리 
 
 ## 2-1) 변수 제거
 
@@ -114,7 +114,7 @@ park.columns
 ~~~
 ![03](https://user-images.githubusercontent.com/51112316/58788420-d875f880-8626-11e9-9747-5b13bf1e3df2.JPG)
 
-## 2-2) 결측치 
+## 2-2) 결측치  
 
 missingno 패키지를 이용하여 결측치의 존재를 시각적으로 확인합니다.
 
